@@ -22,18 +22,8 @@ parser.add_argument('--train', action='store_true',
                     help='run training routine (default: False (run inference))')
 parser.add_argument('--batch-size', type=int, default=1,
                     help='input batch size for validation (default: 1)')
-<<<<<<< HEAD
 parser.add_argument('--num-batches', type=int, 
                     help='number of testset batches to use for inference')
-=======
-parser.add_argument('--batches', type=int, 
-                    help='number of batches to use for validation')
-parser.add_argument('--save-path', default='./checkpoint.pth', 
-                    help='path to temporary checkpoint/saved model (default: ./checkpoint.pth)')
-<<<<<<< HEAD
->>>>>>> 5306439e5e20eae16d66c454555b4b1dde4f800e
-=======
->>>>>>> 5306439e5e20eae16d66c454555b4b1dde4f800e
 parser.add_argument('--learn-rate', type=float, default=1e-3, 
                     help='learning rate for optimizer (default: 1e-3)')
 parser.add_argument('--epochs', type=int, default=10, 
