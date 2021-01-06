@@ -24,7 +24,7 @@ parser.add_argument('--batch-size', type=int, default=1,
 parser.add_argument('--batches', type=int, 
                     help='number of batches to use for validation')
 parser.add_argument('--save-path', default='./checkpoint.pth', 
-                    help='path to temporary checkpoint (default: ./checkpoint.pth)')
+                    help='path to temporary checkpoint/saved model (default: ./checkpoint.pth)')
 parser.add_argument('--learn-rate', type=float, default=1e-3, 
                     help='learning rate for optimizer (default: 1e-3)')
 parser.add_argument('--epochs', type=int, default=10, 
@@ -201,4 +201,3 @@ if args.train:
 else:
     # Perform inference
     validate(dataset)
-
