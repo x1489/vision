@@ -30,6 +30,9 @@ parser.add_argument('--batches', type=int,
                     help='number of batches to use for validation')
 parser.add_argument('--save-path', default='./checkpoint.pth', 
                     help='path to temporary checkpoint/saved model (default: ./checkpoint.pth)')
+<<<<<<< HEAD
+>>>>>>> 5306439e5e20eae16d66c454555b4b1dde4f800e
+=======
 >>>>>>> 5306439e5e20eae16d66c454555b4b1dde4f800e
 parser.add_argument('--learn-rate', type=float, default=1e-3, 
                     help='learning rate for optimizer (default: 1e-3)')
