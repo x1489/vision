@@ -16,16 +16,14 @@ from torchvision.utils import save_image
 
 # Set up experiment
 parser = argparse.ArgumentParser(description='Bidirectional Autoencoder')
-parser.add_argument('source', help='path to dataset')
+parser.add_argument('dataset', help='path to dataset')
+parser.add_argument('checkpoint', help='path to checkpoint or saved model')
 parser.add_argument('--train', action='store_true', 
-                    help='operation to perform on model (default: False)')
+                    help='run training routine (default: False (run inference))')
 parser.add_argument('--batch-size', type=int, default=1,
                     help='input batch size for validation (default: 1)')
-parser.add_argument('--batches', type=int, 
-                    help='number of batches to use for validation')
-parser.add_argument('--save-path', default='./cifar-10.pth', 
-                    help='path to training checkpoint or saved model \
-                    in the case of inference (default: ./cifar-10.pth)')
+parser.add_argument('--num-batches', type=int, 
+                    help='number of testset batches to use for inference')
 parser.add_argument('--learn-rate', type=float, default=1e-3, 
                     help='learning rate for optimizer (default: 1e-3)')
 parser.add_argument('--epochs', type=int, default=10, 
@@ -41,7 +39,7 @@ DIM = 32 * 32 * 3  # CIFAR-10 image dimension
 
 class Autoencoder(nn.Module):
     """Defines an autoencoder network.
-    
+
        Network is a 21-layer MLP with 
        identical input and layer dimensions.
     """
@@ -163,17 +161,17 @@ def train(trainset, epochs=args.epochs, log_int=args.log_interval):
                 running_loss = 0.0
         
         # Save temporary checkpoint
-        torch.save(model.state_dict(), args.save_path)
+        torch.save(model.state_dict(), args.checkpoint)
 
 def validate(testset):
     """Perfroms inference using learned parameters."""
-    params = torch.load(args.save_path, map_location="cpu")
+    params = torch.load(args.checkpoint, map_location="cpu")
     model.load_state_dict(params)
 
     dataiter = DataIterator(testset)
     dataiter.get_iterator()
 
-    for batch in tqdm(range(args.batches)):
+    for batch in tqdm(range(args.num_batches)):
         images, labels = dataiter.release_test()
         name = (dataiter.classes[l.data] for l in labels)
         name = '-'.join(name)
@@ -188,7 +186,7 @@ transform = T.Compose([T.ToTensor(),
                        T.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])])
 
 # Retrieve and transfom dataset
-dataset = torchvision.datasets.CIFAR10(root=args.source, train=args.train,
+dataset = torchvision.datasets.CIFAR10(root=args.dataset, train=args.train,
                                         download=True, transform=transform)
 
 if args.train:
@@ -198,7 +196,7 @@ if args.train:
 
     # Train the network
     train(dataset)
-    print('Training complete. Model saved to: %s.' % (args.save_path))
+    print('Training complete. Model saved to: %s.' % (args.checkpoint))
 else:
     # Perform inference
     validate(dataset)
