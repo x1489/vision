@@ -200,3 +200,4 @@ if args.train:
 else:
     # Perform inference
     validate(dataset)
+
