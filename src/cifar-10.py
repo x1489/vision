@@ -108,7 +108,7 @@ class DataIterator:
                         'dog', 'frog', 'horse', 'ship', 'truck')
         self.loader = torch.utils.data.DataLoader(self.dataset,
                                                  batch_size=args.batch_size,
-                                                 shuffle=True, num_workers=2)
+                                                 shuffle=True)
 
     def get_iterator(self):
         self.loader_iter = iter(self.loader)
@@ -117,11 +117,11 @@ class DataIterator:
         """Fetches a pair of same-label tensors for training."""
         matched = False
         try:
-            input1, label1 = self.loader_iter.next()
+            image1, label1 = self.loader_iter.next()
             while not matched:
-                input2, label2 = self.loader_iter.next()
+                image2, label2 = self.loader_iter.next()
                 if label1 == label2:
-                    return input1, input2
+                    return image1, image2
         except StopIteration:
             return matched, matched
 
@@ -187,7 +187,7 @@ transform = T.Compose([T.ToTensor(),
 
 # Retrieve and transfom dataset
 dataset = torchvision.datasets.CIFAR10(root=args.dataset, train=args.train,
-                                        download=True, transform=transform)
+                                       download=True, transform=transform)
 
 if args.train:
     # Define loss function and optimizer
