@@ -28,8 +28,6 @@ parser.add_argument('--learn-rate', type=float, default=1e-3,
                     help='learning rate for optimizer (default: 1e-3)')
 parser.add_argument('--epochs', type=int, default=10, 
                     help='number of epochs (default: 10)')
-parser.add_argument('--log-interval', type=int, default=1000, 
-                    help='steps to wait before logging training status (default: 1000)')
 parser.add_argument('--seed', type=int, default=7, help='random seed (default: 7)')
 args = parser.parse_args()
 
@@ -41,7 +39,7 @@ class Autoencoder(nn.Module):
     """Defines an autoencoder network.
 
        Network is a 21-layer MLP with 
-       identical input and layer dimensions.
+       identical layer dimensions.
     """
     def __init__(self):
         super(Autoencoder, self).__init__()
@@ -139,8 +137,8 @@ def cycle(x, y):
     optimizer.step()
     return loss.item()
 
-def train(trainset, epochs=args.epochs, log_int=args.log_interval):
-    """Routine to reconstruct image from a class counterpart."""
+def train(trainset, epochs=args.epochs):
+    """Reconstructs image from a class counterpart."""
     dataiter = DataIterator(trainset)
     for epoch in range(epochs):
         step = 0
@@ -154,17 +152,16 @@ def train(trainset, epochs=args.epochs, log_int=args.log_interval):
             running_loss += cycle(yin, yang)
             running_loss += cycle(yang, yin)
             step += 2
-    
-            if step % log_int == 0:
-                print('[Epoch %d of %d | Step %d | Loss: %.5f]' % 
-                      (epoch + 1, epochs, step, running_loss/step))
-                running_loss = 0.0
+
+        # Log training loss
+        print('[Epoch %d of %d | Steps: %d | Loss: %.5f]' % 
+              (epoch + 1, epochs, step, running_loss/step))
         
         # Save temporary checkpoint
         torch.save(model.state_dict(), args.checkpoint)
 
 def validate(testset):
-    """Perfroms inference using learned parameters."""
+    """Perfroms inference using saved parameters."""
     params = torch.load(args.checkpoint, map_location="cpu")
     model.load_state_dict(params)
 
@@ -177,9 +174,10 @@ def validate(testset):
         name = '-'.join(name)
         with torch.no_grad():
             output = model(images.to(device))
-            output = output * 0.5 + 0.5
+            output = output * 0.5 + 0.5 # Unnormalize image
             output = output.cpu()
-            save_image(output, name + '.png')
+            ext = '.png' if batch == 1 else '_{}.png'.format(batch)
+            save_image(output, name + ext)
 
 # Define data transformation
 transform = T.Compose([T.ToTensor(),
