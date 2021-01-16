@@ -1,5 +1,6 @@
 # Pretrained weights or models
 *.pth
+*.pt
 
 # Datasets
 /data
