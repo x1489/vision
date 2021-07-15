@@ -1,0 +1,65 @@
+weights: runs/train/v5l_nc4_6006_150/weights/best.pt
+cfg: ''
+data: ../data.yaml
+hyp:
+  lr0: 0.0248
+  lrf: 0.14268
+  momentum: 0.98
+  weight_decay: 0.00028
+  warmup_epochs: 2.44965
+  warmup_momentum: 0.458
+  warmup_bias_lr: 0.07888
+  box: 0.04515
+  cls: 0.07890550000000002
+  cls_pw: 0.57664
+  obj: 1.06
+  obj_pw: 0.68986
+  iou_t: 0.2
+  anchor_t: 2.0
+  fl_gamma: 0.0
+  hsv_h: 0.0181
+  hsv_s: 0.9
+  hsv_v: 0.24176
+  degrees: 0.0
+  translate: 0.11805
+  scale: 0.49158
+  shear: 0.0
+  perspective: 0.0
+  flipud: 0.0
+  fliplr: 0.5
+  mosaic: 0.833
+  mixup: 0.0
+  label_smoothing: 0.0
+epochs: 300
+batch_size: 16
+img_size:
+- 640
+- 640
+rect: false
+resume: false
+nosave: true
+notest: true
+noautoanchor: false
+evolve: true
+bucket: ''
+cache_images: true
+image_weights: false
+device: '2'
+multi_scale: false
+single_cls: false
+adam: false
+sync_bn: false
+workers: 8
+project: runs/train
+entity: null
+name: evolve
+exist_ok: false
+quad: false
+linear_lr: false
+label_smoothing: 0.0
+upload_dataset: false
+bbox_interval: 30
+save_period: -1
+artifact_alias: latest
+local_rank: -1
+save_dir: runs/train/evolve

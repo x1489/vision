@@ -1,5 +1,5 @@
-train: ../data/train/images
-val: ../data/valid/images
+train: dataset/train/images
+val: dataset/valid/images
 
 nc: 4
 names: ['Alligator', 'Block', 'Longitudinal', 'Transverse']
